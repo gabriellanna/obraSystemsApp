@@ -1,9 +1,14 @@
+import { BrowserRouter } from "react-router-dom";
+import { AppRouters } from "./routes";
+import { AppThemeProvider } from "./shared/contexts/ThemeContext";
 
 export const App = () => {
   return (
-    <div className="App">
-      hello worlds
-    </div>
+    <AppThemeProvider>
+      <BrowserRouter>
+        <AppRouters />
+      </BrowserRouter>
+    </AppThemeProvider>
   );
 }
 
