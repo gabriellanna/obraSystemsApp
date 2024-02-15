@@ -1,9 +1,10 @@
 /* eslint-disable */
 
-import { Box, Button, Divider, Drawer, Icon, ListItemButton, ListItemIcon, ListItemText, useTheme } from "@mui/material";
+import { Box, Button, Divider, Drawer, Icon, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import React, { ReactNode } from "react";
 import AvatarNoImg from "../avatar/AvatarNoImg";
 import { useAppThemeContext } from "../../contexts/ThemeContext";
+import { useDrawerContext } from "../../contexts";
 
 interface IAppThemeProviderProps {
   children: ReactNode
@@ -11,11 +12,14 @@ interface IAppThemeProviderProps {
 
 const MenuLateral: React.FC<IAppThemeProviderProps> = ({ children }) => {
   const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
   const { toggleTheme } = useAppThemeContext();
+
+  const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
   
   return (
     <>
-      <Drawer open={true} variant="permanent">
+      <Drawer open={isDrawerOpen} onClose={toggleDrawerOpen} variant={smDown ? 'temporary' : 'permanent'}>
         <Box width={theme.spacing(28)} height="100%" display='flex' flexDirection='column'>
 
           <Box height={theme.spacing(20)} width={theme.spacing(20)} display='flex' alignItems='center' justifyContent={'center'}>
@@ -48,7 +52,7 @@ const MenuLateral: React.FC<IAppThemeProviderProps> = ({ children }) => {
         </Box>
       </Drawer>
 
-      <Box height="100vh" marginLeft={theme.spacing(28)}>
+      <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(28)}>
         {children}
       </Box>
     </>

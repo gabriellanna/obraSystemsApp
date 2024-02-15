@@ -1,24 +1,22 @@
 import { BrowserRouter } from "react-router-dom";
 import { AppRouters } from "./routes";
-import { AppThemeProvider, useAppThemeContext } from "./shared/contexts/ThemeContext";
+import { AppThemeProvider } from "./shared/contexts/ThemeContext";
 import MenuLateral from "./shared/components/menu-lateral/MenuLateral";
-import { Button } from "@mui/material";
+import { DrawerProvider } from "./shared/contexts";
 
 export const App = () => {
 
-  const { toggleTheme } = useAppThemeContext();
-
   return (
     <AppThemeProvider>
-      <BrowserRouter>
+      <DrawerProvider>
+        <BrowserRouter>
 
-        <MenuLateral>
-          <Button variant="contained" color="primary" onClick={toggleTheme}>Toggle Theme</Button>
-          <p>clique</p>
-        </MenuLateral>
+          <MenuLateral>
+            <AppRouters />
+          </MenuLateral>
 
-        <AppRouters />
-      </BrowserRouter>
+        </BrowserRouter>
+      </DrawerProvider>
     </AppThemeProvider>
   );
 }
