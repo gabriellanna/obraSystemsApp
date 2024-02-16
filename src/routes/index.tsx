@@ -27,7 +27,7 @@ export const AppRouters = () => {
                 label: 'Cidades'
             }
         ])
-    }, [])
+    }, [setDrawerOptions])
 
     return(
         <Routes>
