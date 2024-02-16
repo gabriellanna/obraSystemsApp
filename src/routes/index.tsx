@@ -1,13 +1,12 @@
 import { Button } from "@mui/material";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { useAppThemeContext } from "../shared/contexts/ThemeContext";
 import { useDrawerContext } from "../shared/contexts";
 import { useEffect } from "react";
+import Dashboard from "../pages/dashboard/Dashboard";
 
 export const AppRouters = () => {
 
-    const { toggleTheme } = useAppThemeContext();
-    const { toggleDrawerOpen, setDrawerOptions } = useDrawerContext();
+    const { setDrawerOptions } = useDrawerContext();
     const Nav = useNavigate();
 
     useEffect(() => {
@@ -32,12 +31,7 @@ export const AppRouters = () => {
 
     return(
         <Routes>
-            <Route path="/pagina-inicial" element={
-                <>
-                    <Button variant="contained" color="primary" onClick={toggleTheme}>Toggle Theme</Button>
-                    <Button variant='text' color="primary" onClick={toggleDrawerOpen}>OPEN DRAWER</Button>
-                </>
-            } />
+            <Route path="/pagina-inicial" element={<Dashboard />} />
             <Route path="*" element={<Button variant='outlined' color="primary" onClick={() => Nav("/pagina-inicial")}>Ir para Página inicial</Button>} />
         </Routes>
     );
