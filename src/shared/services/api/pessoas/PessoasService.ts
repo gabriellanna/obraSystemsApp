@@ -24,12 +24,12 @@ type TPessoaComTotalCount = {
 const getAll = async (page = 1, filter = ''): Promise<TPessoaComTotalCount | Error | undefined> => {
   try {
     const urlRelativa = `/pessoas?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&nomeCompleto_like=${filter}`;
-    const { data, headers } = await Api.get(urlRelativa);
+    const { data } = await Api.get(urlRelativa);
 
     if (data) {
       return {
         data,
-        totalCount: Number(headers['x-total-count'] || Environment.LIMITE_DE_LINHAS),
+        totalCount: data.length,
       };
     }
 
