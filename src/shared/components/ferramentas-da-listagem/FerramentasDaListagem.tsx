@@ -11,7 +11,7 @@ interface IFerramentasDaListagemProps {
     aoClicarEmNovo?: () => void;
 }
 
-const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
+export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
     textoDaBusca = '',
     mostrarInputBusca = false,
     aoMudarTextDeBusca,
@@ -58,5 +58,3 @@ const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
         </Box>
     );
 }
-
-export default FerramentasDaListagem;
