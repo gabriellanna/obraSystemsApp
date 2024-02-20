@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDrawerContext } from "../shared/contexts";
 import { useEffect } from "react";
 import Dashboard from "../pages/dashboard/Dashboard";
-import { ListagemDePessoas } from "../pages";
+import { DetalheDePessoas, ListagemDePessoas } from "../pages";
 
 export const AppRouters = () => {
 
@@ -35,8 +35,7 @@ export const AppRouters = () => {
             <Route path="/pagina-inicial" element={<Dashboard />} />
 
             <Route path="/pessoas" element={<ListagemDePessoas />} />
-            
-            {/* <Route path="/pessoas/detalhe/:id" element={<Dashboard />} /> */}
+            <Route path="/pessoas/detalhe/:id" element={<DetalheDePessoas />} />
 
             <Route path="*" element={<Button variant='outlined' color="primary" onClick={() => Nav("/pagina-inicial")}>Ir para Página inicial</Button>} />
         </Routes>

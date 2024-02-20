@@ -16,7 +16,7 @@ export const useDebounce = (delay = 300, notDelayIfFristTime = true) => {
       }
       debouncing.current = setTimeout(() => func(), delay);
     }
-  }, [])
+  }, [delay])
 
   return {debounce};
 }

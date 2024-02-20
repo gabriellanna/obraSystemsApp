@@ -24,12 +24,12 @@ type TPessoaComTotalCount = {
 const getAll = async (page = 1, filter = ''): Promise<TPessoaComTotalCount | Error | undefined> => {
   try {
     const urlRelativa = `/pessoas?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&nomeCompleto_like=${filter}`;
-    const { data } = await Api.get(urlRelativa);
+    const { data, headers } = await Api.get(urlRelativa);
 
     if (data) {
       return {
         data,
-        totalCount: data.length,
+        totalCount: Number(headers['x-total-count'] || Environment.LIMITE_DE_LINHAS),
       };
     }
 
@@ -40,7 +40,7 @@ const getAll = async (page = 1, filter = ''): Promise<TPessoaComTotalCount | Err
   }
 };
 
-const getById = async (id: number): Promise<IDetalhePessoa | Error | undefined> => {
+const getById = async (id: number): Promise<IDetalhePessoa | Error> => {
   try {
     const { data } = await Api.get(`/pessoas/${id}`);
 
