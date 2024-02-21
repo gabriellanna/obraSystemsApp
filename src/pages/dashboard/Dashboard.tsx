@@ -1,7 +1,7 @@
 import { LayoutBaseDePagina } from "../../shared/layouts/LayoutBaseDePagina";
 import { FerramentasDeDetalhe } from "../../shared/components";
 
-const Dashboard = () => {
+export const Dashboard = () => {
 
     
   return (
@@ -15,7 +15,5 @@ const Dashboard = () => {
     >
       Testando
     </LayoutBaseDePagina>
-  )
-}
-
-export default Dashboard;
+  );
+};
