@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
+import * as yup from 'yup';
 
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
-import { VTextFil, VForm, useVForm } from "../../shared/forms";
+import { VTextFil, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 
@@ -12,6 +13,12 @@ interface IFormData {
   cidadeId: number;
   nomeCompleto: string;
 }
+
+const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
+  cidadeId: yup.number().required(),
+  email: yup.string().required().email(),
+  nomeCompleto: yup.string().required().min(3),
+});
 
 export const DetalheDePessoas: React.FC = () => {
   const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
@@ -45,43 +52,63 @@ export const DetalheDePessoas: React.FC = () => {
         nomeCompleto: '',
       });
     }
-  }, [id, navigate]);
+  }, [id, navigate, formRef]);
 
 
   const handleSave = (dados: IFormData) => {
-    setIsLoading(true);
+    // { abortEarly: false } ====> validar todos os erros de uma vez só, true valida só o primeiro
+    formValidationSchema.
+    validate(dados, { abortEarly: false })
+    .then((dadosValidados) => {
 
-    if (id === 'nova') {
-      PessoasService
-        .create(dados)
-        .then((result) => {
-          setIsLoading(false);
-
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            if (isSaveAndClose()) {
-              navigate('/pessoas')
+      setIsLoading(true);
+  
+      if (id === 'nova') {
+        PessoasService
+          .create(dadosValidados)
+          .then((result) => {
+            setIsLoading(false);
+  
+            if (result instanceof Error) {
+              alert(result.message);
             } else {
-              navigate(`/pessoas/detalhe/${result}`); //result me retorna o Id do usuário
+              if (isSaveAndClose()) {
+                navigate('/pessoas')
+              } else {
+                navigate(`/pessoas/detalhe/${result}`); //result me retorna o Id do usuário
+              }
             }
-          }
-        });
-    } else {
-      PessoasService
-        .updateById(Number(id), { id: Number(id), ...dados })
-        .then((result) => {
-          setIsLoading(false);
+          });
+      } else {
+        PessoasService
+          .updateById(Number(id), { id: Number(id), ...dadosValidados })
+          .then((result) => {
+            setIsLoading(false);
+  
+            if (result instanceof Error) {
+              alert(result.message);
+            } else {
+              if (isSaveAndClose()) {
+                navigate('/pessoas')
+              }
+            }
+          });
+      }
 
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            if (isSaveAndClose()) {
-              navigate('/pessoas')
-            }
-          }
-        });
-    }
+    })
+    .catch((errors: yup.ValidationError) => {
+      const validadtionErros: IVFormErrors = {};
+
+      errors.inner.forEach(error => {
+        if (!error.path) return;
+
+        validadtionErros[error.path] = error.message;
+      });
+
+      console.log(errors.errors);
+      formRef.current?.setErrors(validadtionErros);
+    });
+
   };
 
   const handleDelete = (id: number) => {
