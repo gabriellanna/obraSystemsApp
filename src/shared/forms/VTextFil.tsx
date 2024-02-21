@@ -1,6 +1,6 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { useField } from "@unform/core";
-import { useEffect, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 
 
 type TVTextFilProps = TextFieldProps & {
@@ -19,6 +19,8 @@ export const VTextFil: React.FC<TVTextFilProps> = ({ name, ...rest }) => {
     });
   }, [registerField, fieldName, value]);
 
+
+
   return (
     <TextField
       {...rest}
@@ -28,9 +30,8 @@ export const VTextFil: React.FC<TVTextFilProps> = ({ name, ...rest }) => {
       defaultValue={defaultValue}
 
       value={value}
-      onChange={e => setValue(e.target.value)}
-
-      onKeyDown={() => error ? clearError() : undefined}
+      onChange={e => { setValue(e.target.value); rest.onChange?.(e); }}
+      onKeyDown={e => { error && clearError(); rest.onKeyDown?.(e) }}
     />
   );
 };

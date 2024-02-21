@@ -7,8 +7,9 @@ import { PessoasService } from "../../shared/services/api/pessoas/PessoasService
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { VTextFil } from "../../shared/forms";
+import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 
-interface IFormData{
+interface IFormData {
   email: string;
   cidadeId: number;
   nomeCompleto: string;
@@ -25,7 +26,7 @@ export const DetalheDePessoas: React.FC = () => {
   const [nome, setNome] = useState('');
 
   useEffect(() => {
-    if(id !== 'nova') {
+    if (id !== 'nova') {
       setIsLoading(true);
 
       PessoasService.getById(Number(id))
@@ -61,7 +62,7 @@ export const DetalheDePessoas: React.FC = () => {
         });
     } else {
       PessoasService
-        .updateById(Number(id), { id: Number(id), ...dados})
+        .updateById(Number(id), { id: Number(id), ...dados })
         .then((result) => {
           setIsLoading(false);
 
@@ -71,7 +72,7 @@ export const DetalheDePessoas: React.FC = () => {
         });
     }
   };
-  
+
   const handleDelete = (id: number) => {
     if (window.confirm('Realmente deseha apagar?')) {
       PessoasService.deleteById(id)
@@ -104,11 +105,58 @@ export const DetalheDePessoas: React.FC = () => {
         />
       }
     >
-
       <Form ref={formRef} onSubmit={handleSave} placeholder={undefined}>
-        <VTextFil placeholder='Nome completo' name='nomeCompleto' />
-        <VTextFil placeholder='Email' name='email' />
-        <VTextFil placeholder='Cidade id' name='cidadeId' />
+        <Box margin={1} display="flex" flexDirection="column" component={Paper} variant="outlined">
+
+          <Grid container direction="column" padding={2} spacing={2}>
+
+            {isLoading && (
+              <Grid item>
+                <LinearProgress variant="indeterminate" />
+              </Grid>
+            )}
+
+            <Grid item>
+              <Typography>Geral</Typography>
+            </Grid>
+
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} sm={8} md={6} lg={4} xl={2}>
+                <VTextFil
+                  fullWidth
+                  name='nomeCompleto'
+                  disabled={isLoading}
+                  label='Nome completo'
+                  onChange={e => setNome(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} sm={8} md={6} lg={4} xl={2}>
+                <VTextFil
+                  fullWidth
+                  name='email'
+                  label='Email'
+                  disabled={isLoading}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} sm={8} md={6} lg={4} xl={2}>
+                <VTextFil
+                  fullWidth
+                  name='cidadeId'
+                  label='Cidade id'
+                  disabled={isLoading}
+                />
+              </Grid>
+            </Grid>
+
+          </Grid>
+
+        </Box>
       </Form>
 
     </LayoutBaseDePagina>
