@@ -109,40 +109,16 @@
       "nomeCompleto": "Alfredo Silva"
     },
     {
-      "id": 19,
-      "email": "alfredo@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Alfredo Silva"
-    },
-    {
-      "id": 20,
-      "email": "alfredo@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Alfredo Silva"
-    },
-    {
-      "id": 21,
-      "email": "alfredo@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Alfredo Silva"
-    },
-    {
-      "id": 22,
-      "email": "alfredo@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Alfredo Silva"
-    },
-    {
-      "id": 23,
-      "email": "alfredo@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Alfredo Silva"
-    },
-    {
       "id": 24,
       "nomeCompleto": "Jose de Souza",
       "email": "jose@gmail.com",
       "cidadeId": "1"
+    },
+    {
+      "id": 25,
+      "nomeCompleto": "Jorge",
+      "email": "jorge@gmail.com",
+      "cidadeId": "5"
     }
   ]
 }
