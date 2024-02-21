@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Icon, Paper, Skeleton, Theme, Typography, useMediaQuery, useTheme } from "@mui/material"
+import { Box, Button, Divider, Icon, Paper, Skeleton, Theme, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 interface IFerramentasDeDetalheProps {
   textoBotaoNovo?: string;
@@ -22,7 +22,7 @@ interface IFerramentasDeDetalheProps {
   aoClicarEmSalvarEFechar?: () => void;
 }
 
-const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
+export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   textoBotaoNovo = 'Novo',
 
   mostrarBotaoNovo = true,
@@ -160,6 +160,4 @@ const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
     </Box>
   )
-}
-
-export default FerramentasDeDetalhe;
+};
