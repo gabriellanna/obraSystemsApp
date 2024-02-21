@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormHandles } from "@unform/core";
-import { Form } from "@unform/web";
 
 import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import { VTextFil } from "../../shared/forms";
-import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import { VTextFil, VForm } from "../../shared/forms";
 
 interface IFormData {
   email: string;
@@ -111,7 +110,7 @@ export const DetalheDePessoas: React.FC = () => {
         />
       }
     >
-      <Form ref={formRef} onSubmit={handleSave} placeholder={undefined}>
+      <VForm ref={formRef} onSubmit={handleSave} placeholder={undefined}>
         <Box margin={1} display="flex" flexDirection="column" component={Paper} variant="outlined">
 
           <Grid container direction="column" padding={2} spacing={2}>
@@ -163,7 +162,7 @@ export const DetalheDePessoas: React.FC = () => {
           </Grid>
 
         </Box>
-      </Form>
+      </VForm>
 
     </LayoutBaseDePagina>
   );
