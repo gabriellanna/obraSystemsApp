@@ -134,5 +134,8 @@
       "nome": "Taquara",
       "id": 3
     }
-  ]
+  ],
+  "auth": {
+    "accessToken": "aaaaaaaaa.bbbbbbbb.cccccccc"
+  }
 }

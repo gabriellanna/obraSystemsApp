@@ -41,7 +41,7 @@ const ListItemLink: React.FC<IListItemLinkProps> = ({ to, icon, label, onClick }
   );
 };
 
-const MenuLateral: React.FC<IAppThemeProviderProps> = ({ children }) => {
+export const MenuLateral: React.FC<IAppThemeProviderProps> = ({ children }) => {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -94,6 +94,4 @@ const MenuLateral: React.FC<IAppThemeProviderProps> = ({ children }) => {
       </Box>
     </>
   )
-}
-
-export default MenuLateral;
+};
