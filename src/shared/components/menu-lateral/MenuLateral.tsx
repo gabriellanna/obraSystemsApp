@@ -1,10 +1,11 @@
 /* eslint-disable */
 
-import { Box, Button, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import React, { ReactNode } from "react";
+import { Box, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from "@mui/material";
+
 import AvatarNoImg from "../avatar/AvatarNoImg";
 import { useAppThemeContext } from "../../contexts/ThemeContext";
-import { useDrawerContext } from "../../contexts";
+import { useAuthContext, useDrawerContext } from "../../contexts";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 
 interface IAppThemeProviderProps {
@@ -47,6 +48,7 @@ export const MenuLateral: React.FC<IAppThemeProviderProps> = ({ children }) => {
 
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
   const { toggleTheme } = useAppThemeContext();
+  const { logout } = useAuthContext();
   
   return (
     <>
@@ -83,6 +85,13 @@ export const MenuLateral: React.FC<IAppThemeProviderProps> = ({ children }) => {
                   <Icon>dark_mode</Icon>
                 </ListItemIcon>
                 <ListItemText primary="Alternar tema" />
+              </ListItemButton>
+              
+              <ListItemButton onClick={logout}>
+                <ListItemIcon>
+                  <Icon>logout</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Sair" />
               </ListItemButton>
             </List>
           </Box>
