@@ -1,24 +1,37 @@
+import { IResponseAPI } from "../../../models/base";
+import { Auth } from "../../../models/base/Auth";
 import { Api } from "../axios-config";
 
-interface IAuth {
-  accessToken: string;
-}
 
-const auth = async (email: string, password: string): Promise<IAuth | Error> => {
+
+const auth = async (email: string, password: string): Promise<IResponseAPI<Auth>> => {
   try {
-    const { data } = await Api.get('/auth', {data: { email, password }}); // na API de verdade, será o Api.post('/auth', dados);
-
-    if (data) {
-      return data;
-    }
-
-    return new Error('Erro no login.');
-  } catch (error) {
-    console.error(error);
-    return new Error((error as { message: string }).message || 'Erro no login.');
+    const { data } = await Api.post('/auth/login', { email, password })
+    return data
+  } catch (error: any) {
+    return error.response.data;
   }
 };
 
+
+const register = async (name: string, email: string, nomeEmpresa: string, password: string): Promise<IResponseAPI<boolean>> => {
+
+  const request = {
+    name: name,
+    email: email,
+    password: password,
+    nomeEmpresa: nomeEmpresa,
+  };
+
+  const { data } = await Api.post('/auth/firstRegister', request).catch((data) => {
+    return data.response;
+  });
+
+  return data;
+};
+
+
 export const AuthService = {
   auth,
+  register
 };

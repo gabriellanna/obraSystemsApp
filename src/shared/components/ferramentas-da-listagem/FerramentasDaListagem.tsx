@@ -24,14 +24,15 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
 
     return (
         <Box
-            height={theme.spacing(5)}
-            marginX={1}
+            height={theme.spacing(7)}
             padding={1}
             paddingX={2}
             display={'flex'}
             gap={1}
             alignItems={'center'}
             component={Paper}
+            width='100%'
+            // bgcolor={'#c630ce'}
         >
             {mostrarInputBusca && (
                 <TextField

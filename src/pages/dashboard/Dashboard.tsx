@@ -1,103 +1,109 @@
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Box, Card, CardContent, CircularProgress, Grid, Typography } from "@mui/material";
 
-import { CidadesService } from "../../shared/services/api/cidades/CidadesService";
-import { FerramentasDaListagem } from "../../shared/components";
+import { ListagemFotograficas } from "./sections/Dashboard-ListagemFotograficas";
+import { ListagemRelatorios } from "./sections/Dashboard-ListagemRelatorios";
+import FlexBox from "../../shared/components/divs/flexBox";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import { PessoasService } from "../../shared/services/api/pessoas/PessoasService";
+import { DashCard } from "./components/DashCard";
+import { useNavigate, useParams } from "react-router-dom";
+import { ObraService } from "../../shared/services/api/obras/ObrasService";
+import { Obra } from "../../shared/models/Obra";
+
+
 
 export const Dashboard = () => {
-  const [isLoadingCidades, setIsLoadingCidades] = useState(true);
-  const [totalCountCidades, setTotalCountCidades] = useState(0);
 
-  const [isLoadingPessoas, setIsLoadingPessoas] = useState(true);
-  const [totalCountPessoas, setTotalCountPessoas] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
+  const [obra, setObra] = useState<Obra>();
+
+  const navigate = useNavigate();
+
+  const { id } = useParams<'id'>();
 
   useEffect(() => {
-    setIsLoadingCidades(true);
-    setIsLoadingPessoas(true);
+    setIsLoading(true);
 
-    CidadesService.getAll(1)
-      .then((result) => {
-        setIsLoadingCidades(false);
-
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          setTotalCountCidades(result!.totalCount);
-        }
-      });
-
-    PessoasService.getAll(1)
-      .then((result) => {
-        setIsLoadingPessoas(false);
-
-        if (result instanceof Error) {
-          alert(result.message);
-        } else {
-          setTotalCountPessoas(result!.totalCount);
-        }
-      });
+    ObraService.getById(Number(id)).then(result => {
+      if(result.success) {
+        setObra(result.data);
+      } else {
+        alert(result);
+        navigate('/obras');
+      }
+    });
+    
+    setIsLoading(false);
   }, []);
 
-
+  if (id && obra?.id !== 0)
   return (
     <LayoutBaseDePagina
-      titulo="Página inicial"
-      barraDeFerramentas={<FerramentasDaListagem mostrarBotaoNovo={false} />}
+      titulo={obra?.nome ?? "Página Inicial"}
+    //  barraDeFerramentas={<FerramentasDaListagem mostrarBotaoNovo={false} />}
     >
       <Box width='100%' display='flex'>
-        <Grid container margin={2}>
-          <Grid item container spacing={2}>
+        <Grid container margin={2} direction="column" spacing={4}>
 
-            <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+          <Grid item container spacing={4} direction="row">
 
-              <Card>
-                <CardContent>
-                  <Typography variant="h5" align="center">
-                    Total de Pessoas
-                  </Typography>
-
-                  <Box padding={6} display='flex' justifyContent='center' alignItems='center'>
-                    {!isLoadingPessoas && (
-                      <Typography variant="h1">
-                        {totalCountPessoas}
-                      </Typography>
-                    )}
-                    {isLoadingPessoas && (
-                      <CircularProgress size={90} />
-                    )}
-                  </Box>
-                </CardContent>
-              </Card>
-
-            </Grid>
             <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
-
-              <Card>
-                <CardContent>
-                  <Typography variant="h5" align="center">
-                    Total de Cidades
-                  </Typography>
-
-                  <Box padding={6} display='flex' justifyContent='center' alignItems='center'>
-                    {!isLoadingCidades && (
-                      <Typography variant="h1">
-                        {totalCountCidades}
-                      </Typography>
-                    )}
-                    {isLoadingCidades && (
-                      <CircularProgress size={90} />
-                    )}
-                  </Box>
-                </CardContent>
-              </Card>
-
+              <DashCard 
+                value={9}
+                title="Relatórios"
+                icon="receipt_long"
+              />
             </Grid>
 
+            <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+              <DashCard 
+                value={23}
+                title="Atividades"
+                icon="format_list_numbered"
+              />
+            </Grid>
+            
+            <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+              <DashCard 
+                value={3}
+                title="Ocorrências"
+                icon="report"
+              />
+            </Grid>
+            
+            <Grid item xs={12} sm={12} md={6} lg={4} xl={3}>
+              <DashCard 
+                value={34}
+                title="Fotos"
+                icon="photo_library"
+              />
+            </Grid>
           </Grid>
+
+
+          <Grid item container spacing={4} direction="row">
+            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              
+              <ListagemRelatorios />
+
+            </Grid>
+            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+
+              <ListagemFotograficas />
+
+            </Grid>
+          </Grid>
+
+
         </Grid>
       </Box>
     </LayoutBaseDePagina>
+  )
+  else
+  return (
+    <FlexBox>
+      ERROR
+    </FlexBox>
   );
 };

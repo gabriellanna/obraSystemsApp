@@ -1,9 +1,11 @@
 
+
+
 export const Environment = {
   /**
    * Define a quantidade de linhas a ser carregada por padrão nas listagens
    */
-  LIMITE_DE_LINHAS: 5,
+  LIMITE_DE_LINHAS: 10,
   /**
    * Placeholder exibido nas inputs
    */
@@ -15,5 +17,9 @@ export const Environment = {
   /**
    * Url base de consultado dos dados dessa aplicação
    */
-  URL_BASE: 'http://localhost:3333',
+  URL_BASE: (process.env.REACT_APP_API_ENDPOINT as string),
+    /**
+   * Key de criptografia do LocalStorage
+   */
+  PASSWORD_CRIPTO: (process.env.REACT_APP_PASSWORD_CRIPTO as string),
 };

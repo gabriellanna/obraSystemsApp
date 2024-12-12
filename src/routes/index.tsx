@@ -1,55 +1,68 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
-import { useDrawerContext } from "../shared/contexts";
+import { Routes, Route, useNavigate, Navigate, useLocation } from "react-router-dom";
+import { useAuthContext, useDrawerContext } from "../shared/contexts";
 import { useEffect } from "react";
-import { 
+import {
     Dashboard,
     DetalheDePessoas,
     ListagemDePessoas,
     DetalheDeCidades,
-    ListagemDeCidades
+    ListagemDeCidades,
+    ListagemDeObras,
+    Login
 } from "../pages";
+import { MenuLateral } from "../shared/components";
 
 export const AppRouters = () => {
 
+    const { isAuthenticated, user, setGlobalLoading } = useAuthContext();
     const { setDrawerOptions } = useDrawerContext();
+    const location = useLocation();
     const Nav = useNavigate();
 
     useEffect(() => {
         setDrawerOptions([
             {
-                icon: 'home',
-                path: '/pagina-inicial',
+                icon: 'dashboard',
+                path: '/dashboard',
                 label: 'Página Inicial'
             },
             {
-                icon: 'location_city',
-                path: '/cidades',
-                label: 'Cidades'
+                icon: 'receipt_long',
+                path: '/relatorios',
+                label: 'Relatórios'
             },
-            {
-                icon: 'people',
-                path: '/pessoas',
-                label: 'Pessoas'
-            },
-            {
-                icon: 'start',
-                path: '/pagina-inicial2',
-                label: 'Sair'
-            }
-        ])
+        ]);
     }, [setDrawerOptions]);
 
-    return(
-        <Routes>
-            <Route path="/pagina-inicial" element={<Dashboard />} />
+    
+    const routesWithoutMenu = ["/obras"];
 
-            <Route path="/pessoas" element={<ListagemDePessoas />} />
-            <Route path="/pessoas/detalhe/:id" element={<DetalheDePessoas />} />
+    return (
+        <>
+            {!isAuthenticated && (
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="*" element={<Navigate to="/login" />} />
+                </Routes>
+            )}
 
-            <Route path="/cidades" element={<ListagemDeCidades />} />
-            <Route path="/cidades/detalhe/:id" element={<DetalheDeCidades />} />
+            {isAuthenticated && (
+                <MenuLateral hideMenu={routesWithoutMenu.includes(location.pathname)}>
+                    <Routes>
+                        <Route path="/obras/dashboard/:id" element={<Dashboard />} />
 
-            <Route path="*" element={<button onClick={() => Nav("/pagina-inicial")}>Ir para Página inicial</button>} />
-        </Routes>
+                        <Route path="/pessoas" element={<ListagemDePessoas />} />
+                        <Route path="/pessoas/detalhe/:id" element={<DetalheDePessoas />} />
+
+                        <Route path="/cidades" element={<ListagemDeCidades />} />
+                        <Route path="/cidades/detalhe/:id" element={<DetalheDeCidades />} />
+
+                        <Route path="/obras" element={<ListagemDeObras />} />
+                        <Route path="/obras/dashboard" element={<Navigate to="/obras" />} />
+                        <Route path="*" element={<Navigate to="/obras" />} />
+                    </Routes>
+                </MenuLateral>
+            )}
+        </>
     );
 };
