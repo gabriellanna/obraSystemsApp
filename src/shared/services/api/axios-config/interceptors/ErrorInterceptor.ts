@@ -30,4 +30,18 @@
 //   return Promise.reject(error);
 // }
 
-export {};
+import { AxiosError } from "axios";
+import { StorageService } from "../../../storage/storageService";
+
+
+export const errorInterceptor = (error: AxiosError) => {
+
+  if (error.response?.status == 401) {
+   
+    const storage = new StorageService();
+    storage.signOut();
+    return
+  }
+
+  return Promise.reject(error);
+}
